@@ -25,8 +25,9 @@ pipeline {
             }
         }
         stage ('Connecting to EC2') {
-            steps withCredentials([sshUserPrivateKey(
-                    credentialsId: 'krish',
+            steps {
+                 withCredentials([sshUserPrivateKey(
+                    credentialsId: 'ec2-key',
                     keyFileVariable: 'SSH_KEY'
                 )]) {
                     sh '''
@@ -40,6 +41,7 @@ pipeline {
                     nohup python3 app.py > app.log 2>&1 &
                     EOF
                         '''
+                }
             }
         }
     }

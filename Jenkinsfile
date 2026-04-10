@@ -31,7 +31,7 @@ pipeline {
                     keyFileVariable: 'SSH_KEY'
                 )]) {
                     sh '''
-                    ssh -o StrictHostKeyChecking=no -i kkp.pem ec2-user@$(terraform output -raw public_ip) << 'EOF'
+                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ec2-user@$(terraform output -raw public_ip) << 'EOF'
                     cd /home/ec2-user
                     git clone https://github.com/CloudTechDevOps/python-backend-testing.git
                     cd python-backend-testing/backend

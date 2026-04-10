@@ -17,6 +17,21 @@ pipeline {
                   sh  'terraform apply -auto-approve'
             }
       
-        }   
+        } 
+        stage ('Connecting to EC2') {
+            steps {
+                          sh '''
+                            ssh -o StrictHostKeyChecking=no -i kkp.pem ec2-user@$(terraform output -raw public_ip) << 'EOF'
+                            cd /home/ec2-user
+                            git clone https://github.com/CloudTechDevOps/python-backend-testing.git
+                            cd python-backend-testing/backend
+                            python3 -m venv venv
+                            source venv/bin/activate
+                            pip install -r requirements.txt
+                            nohup python3 app.py > app.log 2>&1 &
+                            EOF
+                            '''
+            }
+        }
     }
 }

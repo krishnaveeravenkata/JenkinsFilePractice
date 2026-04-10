@@ -27,7 +27,7 @@ pipeline {
         stage ('Connecting to EC2') {
             steps {
                  withCredentials([sshUserPrivateKey(
-                    credentialsId: 'ec2-key',
+                    credentialsId: 'krish',
                     keyFileVariable: 'SSH_KEY'
                 )]) {
                     sh '''

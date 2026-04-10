@@ -18,12 +18,12 @@ pipeline {
             }
       
         } 
-        stage('Wait for EC2') {
-            steps {
-                echo 'Waiting for EC2 to initialize...'
-                sleep(time: 60, unit: 'SECONDS')
-            }
-        }
+        // stage('Wait for EC2') {
+        //     steps {
+        //         echo 'Waiting for EC2 to initialize...'
+        //         sleep(time: 60, unit: 'SECONDS')
+        //     }
+        // }
         stage ('Connecting to EC2') {
             steps {
                  withCredentials([sshUserPrivateKey(

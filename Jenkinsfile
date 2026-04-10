@@ -36,6 +36,9 @@ pipeline {
                     echo "Connecting to $IP"
                     ssh -o StrictHostKeyChecking=no -i $SSH_KEY ec2-user@$IP << EOF
                     cd /home/ec2-user
+                    # Install required tools
+                    sudo yum update -y
+                    sudo yum install -y git python3
                     rm -rf python-backend-testing
                     git clone https://github.com/CloudTechDevOps/python-backend-testing.git
                     cd python-backend-testing/backend

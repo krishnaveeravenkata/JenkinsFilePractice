@@ -31,16 +31,20 @@ pipeline {
                     keyFileVariable: 'SSH_KEY'
                 )]) {
                     sh '''
-                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ec2-user@$(terraform output -raw public_ip) << 'EOF'
+                    chmod 400 $SSH_KEY
+                    IP=$(terraform output -raw public_ip)
+                    echo "Connecting to $IP"
+                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY ec2-user@$IP << EOF
                     cd /home/ec2-user
+                    rm -rf python-backend-testing
                     git clone https://github.com/CloudTechDevOps/python-backend-testing.git
                     cd python-backend-testing/backend
                     python3 -m venv venv
-                    source venv/bin/activate
+                    . venv/bin/activate
                     pip install -r requirements.txt
                     nohup python3 app.py > app.log 2>&1 &
                     EOF
-                        '''
+                    '''
                 }
             }
         }
